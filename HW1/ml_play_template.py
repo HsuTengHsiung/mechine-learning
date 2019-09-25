@@ -51,6 +51,8 @@ def ml_loop():
             else:
                 ball_down = False
         
+        now_platform_positionX = scene_info.platform[0] + 20
+
         if ball_down == True and now_ball_position[1] > 200:
             m = (now_ball_position[1] - past_ball_position[1]) / (now_ball_position[0] - past_ball_position[0])
             aid = now_ball_position[0] - ((now_ball_position[1] - 395) / m)
@@ -58,13 +60,14 @@ def ml_loop():
                 aid = -aid
             elif aid > 200:
                 aid = 200 - (aid - 200)
+        else:
+            aid = 100
 
-        now_platform_positionX = scene_info.platform[0] + 20
         if aid > now_platform_positionX:
             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
         if aid < now_platform_positionX:
             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
         if aid == now_platform_positionX:
-            pass
+            comm.send_instruction(scene_info.frame, PlatformAction.NONE)
 
         past_ball_position = now_ball_position
