@@ -31,6 +31,10 @@
 ## 流程圖
 ![image](https://github.com/YUXING-LEE/mechine-learning/blob/master/HW3/HW3%E6%B5%81%E7%A8%8B%E5%9C%96.png)
 
+## 資料視覺化
+![compare](./compare.png)
+![all_data](all_data)
+
 # 組員
  - F108112103 李昱興
  - F108112105 王思涵
