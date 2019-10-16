@@ -33,7 +33,10 @@
 
 ## 資料視覺化
 ![compare](./compare.png)
-![all_data](all_data)
+![all_data](./all_data)
+![timestemp](./timestemp.png)
+![ball_platform_position_x](./ball_platform_position_x.png)
+![ball_platform_position_y](./ball_platform_position_y.png)
 
 # 組員
  - F108112103 李昱興
