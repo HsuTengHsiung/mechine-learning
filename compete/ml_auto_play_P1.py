@@ -28,26 +28,17 @@ for i in range(1, len(rows)):
 loadFile.close()
 data = np.array(data)
 
-from os import listdir
-from openpyxl import Workbook
-wb = Workbook()
-ws = wb.active
-ws['A1'] = 'start_x'
-ws['B1'] = 'speed'
-ws['C1'] = 'm'
-ws['D1'] = 'frame_remainder'
-ws['E1'] = 'end_x'
-
 def predict(parameter):
     parameter_length = len(parameter)
     y = [ x for x in data if np.all(x[:parameter_length] == parameter[:parameter_length])]
     aid_length = len(y)
-    if aid_length != 0:
-        aid = 0
-        for aid_value in y:
-            aid += aid_value[-1]
-        aid = round(aid / len(y))
-        return aid
+    if aid_length > 1:
+        aid_array = np.array([ param[-1] if param[-1] > 0 else 0 for param in y], dtype=np.int64)
+        print(aid_array)
+        counts = np.bincount(aid_array)
+        return np.argmax(counts)
+    if aid_length == 1:
+        return y[0][-1]
     else:
         return predict(parameter[:-1])
 
@@ -63,9 +54,6 @@ def ml_loop(side: str):
            scene_info.status == GameStatus.GAME_2P_WIN:
             comm.ml_ready()
             first = True
-            dist = "new_log1"
-            file_length = len(listdir(dist))
-            wb.save(dist + '/7th_' + str(file_length + 1) + '.xlsx')
             continue
 
         now_ball_position = scene_info.ball
@@ -92,14 +80,6 @@ def ml_loop(side: str):
                 aid = -aid
             elif aid > 195:
                 aid = 200 - (aid - 200)
-        
-        if ball_down == True:
-            if now_ball_position[1] == 415:
-                params.append(scene_info.ball[0])
-                ws.append(params)
-        else:
-            if now_ball_position[1] == 80:
-                params = [int(scene_info.ball[0]), int(scene_info.ball_speed), m, int(scene_info.frame % 200)]
 
         if now_ball_position[1] == 80:
             first = False
